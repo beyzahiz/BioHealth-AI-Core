@@ -6,7 +6,7 @@ import io
 class MRIService:
     def __init__(self, model_path: str):
         #uygulama başladığında modeli bir kez yükler, singleton, apinin performansı için
-        self.model = tf.keras.models.load_model(model_path)
+        self.model = tf.keras.models.load_model('app/models/mri_model.keras')
         self.classes = ['Glioma', 'Meningioma', 'No Tumor', 'Pituitary']
 
     def predict (self, image_bytes):
