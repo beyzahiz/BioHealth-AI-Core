@@ -8,7 +8,7 @@ venv/
 env/
 
 # Model dosyaları (Büyük dosyalar olduğu için GitHub'a pushlanmaz, buluttan çekilir)
-app/models/*.h5
+app/models/*.keras
 app/models/*.pth
 
 # Veri ve Veritabanları
