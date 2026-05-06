@@ -1,0 +1,19 @@
+# Python bytecode (Derlenmiş dosyalar)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Sanal ortam (Virtual Environment)
+venv/
+env/
+
+# Model dosyaları (Büyük dosyalar olduğu için GitHub'a pushlanmaz, buluttan çekilir)
+app/models/*.h5
+app/models/*.pth
+
+# Veri ve Veritabanları
+data/*.db
+data/*.sqlite
+
+# OS dosyaları
+.DS_Store (Mac kullandığın için bu otomatik oluşur, engellemelisin)
