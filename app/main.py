@@ -26,4 +26,3 @@ async def analyze_mri(file: UploadFile = File(...)):
         "filename": file.filename,
         "analysis": result
     }
-
