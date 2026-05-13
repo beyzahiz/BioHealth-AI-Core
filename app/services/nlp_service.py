@@ -22,3 +22,4 @@ class NLPService:
                 "score": round(float(ent["score"]), 4)
             })
         return results
+    
