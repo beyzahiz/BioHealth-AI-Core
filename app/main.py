@@ -1,11 +1,13 @@
 from fastapi import FastAPI, File, UploadFile
 from app.services.mri_service import MRIService
+from app.services.nlp_service import NLPService
 import os
 
 app = FastAPI(title = "BioHealth AI Core Platform")
 
 MODEL_PATH = "app/models/mri_model.keras" 
 mri_service = MRIService(MODEL_PATH)
+nlp_service = NLPService()
 
 @app.get("/")
 def read_root():
@@ -25,4 +27,12 @@ async def analyze_mri(file: UploadFile = File(...)):
     return {
         "filename": file.filename,
         "analysis": result
+    }
+
+@app.post("/api/nlp/analyze")
+async def analyze_medical_text(text: str):
+    result = nlp_service.analyze_text(text)
+    return {
+        "text_analyzed": text,
+        "entities": result
     }
