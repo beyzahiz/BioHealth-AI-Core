@@ -7,7 +7,7 @@ class NLPService:
         self.ner_pipeline = pipeline(
             "ner", 
             model="d4data/biomedical-ner-all", 
-            aggregation_strategy="simple"
+            aggregation_strategy="first"
         )
         print("--- [BAŞARI] Bio-NLP Modeli hazır! ---")
 
