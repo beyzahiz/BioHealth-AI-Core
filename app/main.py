@@ -1,7 +1,13 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Depends
 from app.services.mri_service import MRIService
 from app.services.nlp_service import NLPService
 import os
+from app.core.database import engine
+from app.models import db_models
+from sqlalchemy.orm import Session
+
+# db_models içinde tanımlanan tabloları veritabanında oluşturur
+db_models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title = "BioHealth AI Core Platform")
 
@@ -18,11 +24,20 @@ def health_check():
     return {"status": "healthy", "services": ["mri"]}
 
 @app.post("/api/mri/analyze")
-async def analyze_mri(file: UploadFile = File(...)):
+async def analyze_mri(file: UploadFile = File(...), db: Session = Depends(get_db)):
     #kullanıcının gönderdiği fotoğrafı bytes olarak okur
     image_bytes = await file.read()
-    
     result = mri_service.predict(image_bytes)
+
+    # VERİTABANINA KAYIT KISMI
+    new_record = db_models.AnalysisResult(
+        filename=file.filename,
+        analysis_type="MRI",
+        prediction=result['prediction'],
+        confidence=result['confidence']
+    )
+    db.add(new_record)
+    db.commit()
     
     return {
         "filename": file.filename,
