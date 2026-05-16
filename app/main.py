@@ -2,7 +2,7 @@ from fastapi import FastAPI, File, UploadFile, Depends
 from app.services.mri_service import MRIService
 from app.services.nlp_service import NLPService
 import os
-from app.core.database import engine
+from app.core.database import engine, get_db
 from app.models import db_models
 from sqlalchemy.orm import Session
 
