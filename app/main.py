@@ -51,3 +51,9 @@ async def analyze_medical_text(text: str):
         "text_analyzed": text,
         "entities": result
     }
+
+@app.get("/api/analysis/history")
+def get_analysis_history(db: Session = Depends(get_db)):
+    # Veritabanındaki tüm kayıtları çekip listeler
+    history = db.query(db_models.AnalysisResult).all()
+    return history
