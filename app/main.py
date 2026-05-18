@@ -45,11 +45,35 @@ async def analyze_mri(file: UploadFile = File(...), db: Session = Depends(get_db
     }
 
 @app.post("/api/nlp/analyze")
-async def analyze_medical_text(text: str):
+async def analyze_medical_text(text: str, db: Session = Depends(get_db)):
     result = nlp_service.analyze_text(text)
+    
+    # Karmaşık entity listesini veritabanında okunabilir temiz bir özete çevirelim
+    if isinstance(result, list) and len(result) > 0:
+        found_entities = ", ".join([f"{item.get('word', item.get('entity'))} ({item.get('entity_group', 'Terim')})" for item in result])
+        prediction_text = f"Tespit Edilen Tıbbi Varlıklar: {found_entities}"
+    else:
+        prediction_text = "Herhangi bir tıbbi varlık tespit edilemedi."
+
+    # Doktorun analiz ettiği metnin ilk 30 karakterini "filename" yerine başlık gibi koyalım
+    # Böylece geçmiş listesinde hangi metin olduğunu anlar
+    text_preview = text if len(text) <= 30 else text[:27] + "..."
+    
+    db_analysis = db_models.AnalysisResult(
+        filename=f"Metin: {text_preview}",
+        prediction=prediction_text,
+        confidence=1.0
+    )
+    
+    db.add(db_analysis)
+    db.commit()
+    db.refresh(db_analysis)
+    
     return {
+        "id": db_analysis.id,
         "text_analyzed": text,
-        "entities": result
+        "entities": result,
+        "db_status": "Başarıyla Veritabanına Mühürlendi"
     }
 
 @app.get("/api/analysis/history")
