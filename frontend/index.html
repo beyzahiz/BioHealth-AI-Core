@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioHealth AI Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>🔬 BioHealth AI Core Platform</h1>
+        <p>Klinik Yapay Zeka Analiz Merkezi</p>
+    </header>
+
+    <main class="container">
+        <section class="card">
+            <h2> Tıbbi Metin / Rapor Analizi (Bio-NLP)</h2>
+            <textarea id="nlpInput" placeholder="Hastanın klinik raporunu veya semptomlarını buraya yazın (Örn: Patient presents with severe chest pain...)"></textarea>
+            <button id="btnNlp" onclick="analyzeText()">Metni Analiz Et</button>
+            <div id="nlpResult" class="result-box"></div>
+        </section>
+
+        <section class="card">
+            <h2> MRI Görsel Analizi (Kanser Teşhisi)</h2>
+            <div class="file-upload">
+                <input type="file" id="mriInput" accept="image/*">
+            </div>
+            <button id="btnMri" onclick="analyzeMri()">MRI Görselini Tara</button>
+            <div id="mriResult" class="result-box"></div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
