@@ -1,4 +1,5 @@
 from fastapi import FastAPI, File, UploadFile, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from app.services.mri_service import MRIService
 from app.services.nlp_service import NLPService
 import os
@@ -10,6 +11,14 @@ from sqlalchemy.orm import Session
 db_models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title = "BioHealth AI Core Platform")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Web arayüzümüzün tarayıcı engelini tamamen kaldırır
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 MODEL_PATH = "app/models/mri_model.keras" 
 mri_service = MRIService(MODEL_PATH)
